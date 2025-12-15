@@ -1,0 +1,43 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+>
+  <!-- Background -->
+  <rect
+    width="24"
+    height="24"
+    rx="6"
+    fill="url(#grad)"
+  />
+
+  <!-- Modern box (cube) -->
+  <rect
+    x="7"
+    y="7"
+    width="10"
+    height="10"
+    rx="2"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="2"
+  />
+
+  <!-- Inner line for depth -->
+  <line
+    x1="7"
+    y1="12"
+    x2="17"
+    y2="12"
+    stroke="#ffffff"
+    stroke-width="1.5"
+    opacity="0.7"
+  />
+
+  <!-- Gradient -->
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#5b21b6"/>
+    </linearGradient>
+  </defs>
+</svg>

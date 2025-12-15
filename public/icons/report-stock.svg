@@ -1,0 +1,25 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 24 24"
+>
+  <!-- Background -->
+  <rect
+    width="24"
+    height="24"
+    rx="6"
+    fill="url(#grad)"
+  />
+
+  <!-- Report / Stock bars -->
+  <rect x="7" y="11" width="2.5" height="6" rx="1" fill="#ffffff"/>
+  <rect x="10.75" y="9" width="2.5" height="8" rx="1" fill="#ffffff" opacity="0.85"/>
+  <rect x="14.5" y="7" width="2.5" height="10" rx="1" fill="#ffffff" opacity="0.7"/>
+
+  <!-- Gradient -->
+  <defs>
+    <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+  </defs>
+</svg>
