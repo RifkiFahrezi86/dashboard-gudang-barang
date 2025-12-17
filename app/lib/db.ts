@@ -79,7 +79,7 @@ export async function getBarang({
 
   const barang = search
     ? (
-        await sql<Barang>`
+        await sql`
           SELECT id, nama, jenis, stok, satuan
           FROM barang
           WHERE nama ILIKE ${"%" + search + "%"}
@@ -89,7 +89,7 @@ export async function getBarang({
         `
       ).rows
     : (
-        await sql<Barang>`
+        await sql`
           SELECT id, nama, jenis, stok, satuan
           FROM barang
           ORDER BY nama ASC
@@ -100,21 +100,21 @@ export async function getBarang({
 
   const total = search
     ? (
-        await sql<{ total: number }>`
+        await sql`
           SELECT COUNT(*)::int AS total
           FROM barang
           WHERE nama ILIKE ${"%" + search + "%"}
         `
       ).rows[0].total
     : (
-        await sql<{ total: number }>`
+        await sql`
           SELECT COUNT(*)::int AS total
           FROM barang
         `
       ).rows[0].total;
 
   return {
-    barang,
+    barang: barang as Barang[],
     total,
     pageSize,
   };

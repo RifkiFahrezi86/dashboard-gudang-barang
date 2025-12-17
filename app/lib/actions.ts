@@ -2,14 +2,20 @@
 
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
-
+import { redirect } from "next/navigation";
 /* CREATE */
 export async function createBarang(formData: FormData) {
   const id = formData.get("id") as string;
   const nama = formData.get("nama") as string;
   const jenis = formData.get("jenis") as string;
-  const stok = Number(formData.get("stok"));
   const satuan = formData.get("satuan") as string;
+
+  const stokRaw = formData.get("stok");
+  const stok = Number(stokRaw);
+
+  if (!id || !nama || !jenis || !satuan || isNaN(stok)) {
+    throw new Error("Data tidak valid");
+  }
 
   await sql`
     INSERT INTO barang (id, nama, jenis, stok, satuan)
@@ -18,6 +24,9 @@ export async function createBarang(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
+  redirect("/dashboard/barang");
+
+
 }
 
 
@@ -41,6 +50,7 @@ export async function updateBarang(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
+  redirect("/dashboard/barang");
 }
 
 
@@ -53,4 +63,5 @@ export async function deleteBarang(id: string) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
+  redirect("/dashboard/barang");
 }
