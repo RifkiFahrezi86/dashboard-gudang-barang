@@ -36,11 +36,15 @@ const headerMap: Record<
 export default function Header() {
   const pathname = usePathname();
 
-  // fallback jika route belum ada di map
-  const current = headerMap[pathname] ?? {
-    title: "Dashboard",
-    icon: "/icons/dashboard.svg",
-  };
+const current =
+  Object.entries(headerMap)
+    .sort((a, b) => b[0].length - a[0].length) // ⬅️ PENTING
+    .find(([key]) => pathname.startsWith(key))
+    ?.[1] ?? {
+      title: "Dashboard",
+      icon: "/icons/dashboard.svg",
+    };
+
 
   return (
     <header className="header">

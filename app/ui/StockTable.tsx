@@ -1,3 +1,5 @@
+import { getStockStatus } from "@/app/lib/stock";
+
 type Item = {
   id: string;
   nama: string;
@@ -6,10 +8,19 @@ type Item = {
   satuan: string;
 };
 
-export default function StockTable({ data }: { data: Item[] }) {
+export default function StockTable({
+  data,
+  limit = 10,
+}: {
+  data: Item[];
+  limit?: number;
+}) {
   return (
     <section className="table-box">
-      <h3>Stok barang telah mencapai batas minimum</h3>
+      <h3>
+        Stok barang telah mencapai batas minimum
+        <span className="hint">(≤ {limit})</span>
+      </h3>
 
       <table>
         <thead>
@@ -21,20 +32,33 @@ export default function StockTable({ data }: { data: Item[] }) {
             <th>Satuan</th>
           </tr>
         </thead>
+
         <tbody>
-          {data.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.nama}</td>
-              <td>{item.jenis}</td>
-              <td>
-                <span className={`badge ${item.stok <= 5 ? "danger" : "warning"}`}>
-                  {item.stok}
-                </span>
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={5} style={{ textAlign: "center", opacity: 0.6 }}>
+                Tidak ada barang dengan stok rendah
               </td>
-              <td>{item.satuan}</td>
             </tr>
-          ))}
+          ) : (
+            data.map((item) => {
+              const status = getStockStatus(item.stok, limit);
+
+              return (
+                <tr key={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.nama}</td>
+                  <td>{item.jenis}</td>
+                  <td>
+                    <span className={`badge ${status}`}>
+                      {item.stok}
+                    </span>
+                  </td>
+                  <td>{item.satuan}</td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
     </section>

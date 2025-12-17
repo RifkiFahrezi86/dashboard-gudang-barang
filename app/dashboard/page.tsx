@@ -1,16 +1,23 @@
 import Header from "@/app/ui/Header";
 import StatCard from "@/app/ui/StatCard";
 import StockTable from "@/app/ui/StockTable";
-import { getDashboardStats, getLowStock } from "@/app/lib/db";
+import Chart from "@/app/ui/Chart";
 
+import {
+  getDashboardStats,
+  getLowStock,
+  getChartData,
+} from "@/app/lib/db";
 
 export default async function DashboardPage() {
   const stats = await getDashboardStats();
   const stocks = await getLowStock();
+  const chart = await getChartData(); 
+;
 
   return (
     <>
-      <Header/>
+      <Header />
 
       <section className="cards">
         <StatCard title="Data Barang" value={stats.barang} type="purple" />
@@ -20,7 +27,10 @@ export default async function DashboardPage() {
         <StatCard title="Satuan" value={stats.satuan} type="cyan" />
       </section>
 
-      <StockTable data={stocks} />
+      <Chart data={chart} />
+
+      <StockTable data={stocks} limit={10} />
+
     </>
   );
 }
