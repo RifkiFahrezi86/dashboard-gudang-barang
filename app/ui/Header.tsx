@@ -17,11 +17,11 @@ const headerMap: Record<
   },
   "/dashboard/barang-masuk": {
     title: "Barang Masuk",
-    icon: "/icons/Arrow-down.svg",
+    icon: "/icons/barangin.svg",
   },
   "/dashboard/barang-keluar": {
     title: "Barang Keluar",
-    icon: "/icons/Arrow-up.svg",
+    icon: "/icons/barangout.svg",
   },
   "/dashboard/laporan": {
     title: "Laporan Stok",
