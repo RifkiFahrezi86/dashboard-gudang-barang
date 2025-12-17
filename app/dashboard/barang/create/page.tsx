@@ -4,7 +4,7 @@ import { createBarang } from "@/app/lib/actions";
 export default function CreateBarangPage() {
   return (
     <>
-      <Header title="Tambah Barang" />
+      <Header/>
 
       <section className="form-box">
         <form action={createBarang} className="form-grid">

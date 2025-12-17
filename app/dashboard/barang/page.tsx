@@ -28,7 +28,7 @@ export default async function BarangPage({
   }
   return (
     <>
-      <Header title="Barang" />
+      <Header/>
 
           <div className="page-actions">
             <div className="search-group">

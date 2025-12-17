@@ -20,7 +20,7 @@ export default async function EditBarangPage({
 
   return (
     <>
-      <Header title="Edit Barang" />
+      <Header />
       <Form
         action={updateBarang}
         defaultValues={barang}

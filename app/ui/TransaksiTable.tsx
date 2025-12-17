@@ -1,9 +1,4 @@
-type Transaksi = {
-  id: number;
-  nama: string;
-  jumlah: number;
-  tanggal: string;
-};
+import { Transaksi } from "@/app/lib/types";
 
 export default function TransaksiTable({ data }: { data: Transaksi[] }) {
   return (
@@ -23,9 +18,9 @@ export default function TransaksiTable({ data }: { data: Transaksi[] }) {
               <td>{i + 1}</td>
               <td>{item.nama}</td>
               <td>
-                <span className="badge info">{item.jumlah}</span>
+                <span className="badge-info">{item.jumlah}</span>
               </td>
-              <td>{new Date(item.tanggal).toLocaleString()}</td>
+              <td>{new Date(item.tanggal).toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>

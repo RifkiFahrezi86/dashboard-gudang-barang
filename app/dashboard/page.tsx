@@ -17,8 +17,7 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <Header />
-
+     <Header />
       <section className="cards">
         <StatCard title="Data Barang" value={stats.barang} type="purple" />
         <StatCard title="Barang Masuk" value={stats.masuk} type="green" />

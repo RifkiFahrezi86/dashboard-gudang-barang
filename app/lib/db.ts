@@ -1,6 +1,6 @@
 // app/lib/db.ts
 import { sql } from "@vercel/postgres";
-
+import { Transaksi, Barang } from "./types";
 
 export async function getDashboardStats() {
   const barang = await sql`SELECT COUNT(*) FROM barang`;
@@ -18,10 +18,11 @@ export async function getDashboardStats() {
   };
 }
 
-export async function getLowStock() {
-  const { rows } = await sql`
-    SELECT * FROM barang
-    WHERE stok <= 58
+export async function getLowStock(): Promise<Barang[]> {
+  const { rows } = await sql<Barang>`
+    SELECT id, nama, jenis, stok, satuan
+    FROM barang
+    WHERE stok <= 10
     ORDER BY stok ASC
   `;
   return rows;
@@ -68,44 +69,58 @@ export async function getBarang({
 }: {
   page: number;
   search: string;
-}) {
+}): Promise<{
+  barang: Barang[];
+  total: number;
+  pageSize: number;
+}> {
   const pageSize = 7;
   const offset = (page - 1) * pageSize;
 
-  const { rows: barang } = search
-    ? await sql`
-        SELECT *
-        FROM barang
-        WHERE nama ILIKE ${"%" + search + "%"}
-        ORDER BY nama ASC
-        LIMIT ${pageSize}
-        OFFSET ${offset}
-      `
-    : await sql`
-        SELECT *
-        FROM barang
-        ORDER BY nama ASC
-        LIMIT ${pageSize}
-        OFFSET ${offset}
-      `;
+  const barang = search
+    ? (
+        await sql<Barang>`
+          SELECT id, nama, jenis, stok, satuan
+          FROM barang
+          WHERE nama ILIKE ${"%" + search + "%"}
+          ORDER BY nama ASC
+          LIMIT ${pageSize}
+          OFFSET ${offset}
+        `
+      ).rows
+    : (
+        await sql<Barang>`
+          SELECT id, nama, jenis, stok, satuan
+          FROM barang
+          ORDER BY nama ASC
+          LIMIT ${pageSize}
+          OFFSET ${offset}
+        `
+      ).rows;
 
-  const { rows } = search
-    ? await sql`
-        SELECT COUNT(*)::int AS total
-        FROM barang
-        WHERE nama ILIKE ${"%" + search + "%"}
-      `
-    : await sql`
-        SELECT COUNT(*)::int AS total
-        FROM barang
-      `;
+  const total = search
+    ? (
+        await sql<{ total: number }>`
+          SELECT COUNT(*)::int AS total
+          FROM barang
+          WHERE nama ILIKE ${"%" + search + "%"}
+        `
+      ).rows[0].total
+    : (
+        await sql<{ total: number }>`
+          SELECT COUNT(*)::int AS total
+          FROM barang
+        `
+      ).rows[0].total;
 
   return {
     barang,
-    total: rows[0].total,
+    total,
     pageSize,
   };
 }
+
+
 
 export async function getLaporanStok() {
   const { rows } = await sql`
@@ -122,16 +137,12 @@ export async function getLaporanStok() {
   return rows;
 }
 
-export async function getBarangMasuk({
-  page,
-}: {
-  page: number;
-}) {
+export async function getBarangMasuk({ page }: { page: number }) {
   const pageSize = 7;
   const offset = (page - 1) * pageSize;
 
-  const { rows } = await sql`
-    SELECT 
+  const { rows } = await sql<Transaksi>`
+    SELECT
       bm.id,
       b.nama,
       bm.jumlah,
@@ -154,14 +165,12 @@ export async function getBarangMasuk({
     pageSize,
   };
 }
-export async function getBarangKeluar({
-  page,
-}: {
-  page: number;
-}) {
+
+export async function getBarangKeluar({ page }: { page: number }) {
   const pageSize = 7;
   const offset = (page - 1) * pageSize;
-  const { rows } = await sql`
+
+  const { rows } = await sql<Transaksi>`
     SELECT
       bk.id,
       b.nama,
@@ -173,11 +182,12 @@ export async function getBarangKeluar({
     LIMIT ${pageSize}
     OFFSET ${offset}
   `;
-  const totalResult = await sql`
 
+  const totalResult = await sql`
     SELECT COUNT(*)::int AS total
     FROM barang_keluar
   `;
+
   return {
     data: rows,
     total: totalResult.rows[0].total,

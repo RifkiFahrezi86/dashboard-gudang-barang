@@ -3,6 +3,7 @@ type Props = {
   total: number;
   pageSize: number;
   search: string;
+  basePath: string;
 };
 
 export default function Pagination({
@@ -10,10 +11,11 @@ export default function Pagination({
   total,
   pageSize,
   search,
+  basePath,
 }: Props) {
   const totalPages = Math.ceil(total / pageSize);
 
-  // ⛔ Tidak render pagination jika cuma 1 page
+  // Tidak render pagination jika cuma 1 page
   if (totalPages <= 1) return null;
 
   const query = search ? `&search=${encodeURIComponent(search)}` : "";
@@ -23,20 +25,20 @@ export default function Pagination({
       {/* PREV */}
       {page > 1 && (
         <a
-          href={`/dashboard/barang?page=${page - 1}${query}`}
+          href={`${basePath}?page=${page - 1}${query}`}
           className="page-btn"
         >
-          ‹ Prev
+          ⟨ Prev
         </a>
       )}
 
-      {/* PAGE NUMBER */}
+      {/* PAGE NUMBERS */}
       {Array.from({ length: totalPages }).map((_, i) => {
         const p = i + 1;
         return (
           <a
             key={p}
-            href={`/dashboard/barang?page=${p}${query}`}
+            href={`${basePath}?page=${p}${query}`}
             className={`page-btn ${p === page ? "active" : ""}`}
           >
             {p}
@@ -47,10 +49,10 @@ export default function Pagination({
       {/* NEXT */}
       {page < totalPages && (
         <a
-          href={`/dashboard/barang?page=${page + 1}${query}`}
+          href={`${basePath}?page=${page + 1}${query}`}
           className="page-btn"
         >
-          Next ›
+          Next ⟩
         </a>
       )}
     </div>

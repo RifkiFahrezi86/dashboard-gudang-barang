@@ -36,29 +36,24 @@ const headerMap: Record<
 export default function Header() {
   const pathname = usePathname();
 
-const current =
-  Object.entries(headerMap)
-    .sort((a, b) => b[0].length - a[0].length) // ⬅️ PENTING
-    .find(([key]) => pathname.startsWith(key))
-    ?.[1] ?? {
-      title: "Dashboard",
-      icon: "/icons/dashboard.svg",
-    };
-
+  const current =
+    Object.entries(headerMap)
+      .sort((a, b) => b[0].length - a[0].length)
+      .find(([key]) => pathname.startsWith(key))?.[1] ??
+    headerMap["/dashboard"];
 
   return (
     <header className="header">
       <div className="header-left">
-        <div className="header-icon">
-          <Image
-            src={current.icon}
-            alt={current.title}
-            width={22}
-            height={22}
-          />
-        </div>
+        <Image
+          src={current.icon}
+          alt={current.title}
+          width={22}
+          height={22}
+        />
         <h1>{current.title}</h1>
       </div>
     </header>
   );
 }
+

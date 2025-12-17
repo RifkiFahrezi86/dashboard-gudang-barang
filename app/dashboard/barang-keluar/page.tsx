@@ -15,7 +15,7 @@ export default async function BarangKeluarPage({
 
   return (
     <>
-            <Header title="Barang Keluar" />
+            <Header/>
 
             <TransaksiTable data={data} />
 

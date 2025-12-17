@@ -7,7 +7,7 @@ export default async function LaporanStokPage() {
 
   return (
     <>
-      <Header title="Laporan Stok" />
+      <Header/>
                       <LaporanActions />
 
 

@@ -23,7 +23,7 @@ export default async function DeleteBarangPage({
 
   return (
     <>
-      <Header title="Hapus Barang" />
+      <Header/>
       <div className="delete-box">
         <p>Apakah kamu yakin ingin menghapus barang:</p>
         <h3>{barang.nama}</h3>

@@ -1,4 +1,5 @@
-import { getStockStatus } from "@/app/lib/stock";
+import { Barang } from "@/app/lib/types";
+import { getStockStatus } from "@/app/lib/stock"
 
 type Item = {
   id: string;
@@ -8,18 +9,17 @@ type Item = {
   satuan: string;
 };
 
-export default function StockTable({
-  data,
-  limit = 10,
-}: {
+type Props = {
   data: Item[];
   limit?: number;
-}) {
+};
+
+export default function StockTable({ data, limit = 10 }: Props) {
   return (
     <section className="table-box">
       <h3>
-        Stok barang telah mencapai batas minimum
-        <span className="hint">(≤ {limit})</span>
+        Stok barang telah mencapai batas minimum{" "}
+        <span className="hint">({limit})</span>
       </h3>
 
       <table>
@@ -43,7 +43,6 @@ export default function StockTable({
           ) : (
             data.map((item) => {
               const status = getStockStatus(item.stok, limit);
-
               return (
                 <tr key={item.id}>
                   <td>{item.id}</td>

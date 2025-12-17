@@ -16,9 +16,8 @@ export default async function BarangMasukPage({
 
   return (
     <>
-            <Header title="Barang Masuk" />
-
-            <TransaksiTable data={data} />
+                <Header/>
+                <TransaksiTable data={data} />
 
             <Pagination
             page={page}

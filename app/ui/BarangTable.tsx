@@ -6,6 +6,7 @@ type Barang = {
   satuan: string;
 };
 
+
 export default function BarangTable({ data }: { data: Barang[] }) {
   return (
     <div className="table-box">
