@@ -22,7 +22,7 @@ export async function getLowStock(): Promise<Barang[]> {
   const { rows } = await sql<Barang>`
     SELECT id, nama, jenis, stok, satuan
     FROM barang
-    WHERE stok <= 10
+    WHERE stok <= 100
     ORDER BY stok ASC
   `;
   return rows;
