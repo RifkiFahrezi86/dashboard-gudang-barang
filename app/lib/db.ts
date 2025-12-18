@@ -122,19 +122,14 @@ export async function getBarang({
 
 
 
-export async function getLaporanStok() {
+export async function getLaporanStok(): Promise<Barang[]> {
   const { rows } = await sql`
-    SELECT 
-      id,
-      nama,
-      jenis,
-      stok,
-      satuan
+    SELECT id, nama, jenis, stok, satuan
     FROM barang
     ORDER BY stok ASC
   `;
 
-  return rows;
+  return rows as Barang[];
 }
 
 export async function getBarangMasuk({ page }: { page: number }) {

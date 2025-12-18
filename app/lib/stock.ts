@@ -18,3 +18,16 @@ export function getStockStatus(
 
   return "safe"; // 🟢 aman
 }
+export function getStockLabel(status: StockStatus) {
+  switch (status) {
+    case "critical":
+      return "Sangat Kritis";
+    case "danger":
+      return "Stok Menipis";
+    case "warning":
+      return "Perlu Perhatian";
+    default:
+      return "Aman";
+  }
+}
+export const DEFAULT_STOCK_LIMIT = 10;

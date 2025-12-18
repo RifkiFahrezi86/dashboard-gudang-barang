@@ -1,5 +1,9 @@
 import { Barang } from "@/app/lib/types";
-import { getStockStatus } from "@/app/lib/stock"
+import {
+  getStockStatus,
+  getStockLabel,
+  DEFAULT_STOCK_LIMIT,
+} from "@/app/lib/stock";
 
 type Item = {
   id: string;
@@ -42,7 +46,11 @@ export default function StockTable({ data, limit = 10 }: Props) {
             </tr>
           ) : (
             data.map((item) => {
-              const status = getStockStatus(item.stok, limit);
+            const status = getStockStatus(item.stok, DEFAULT_STOCK_LIMIT);
+            <span className={`status ${status}`}>
+              {getStockLabel(status)}
+            </span>
+
               return (
                 <tr key={item.id}>
                   <td>{item.id}</td>
