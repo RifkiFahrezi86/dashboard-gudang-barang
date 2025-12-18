@@ -861,3 +861,15 @@ td {
     color: black;
   }
 }
+
+/* =========================
+   USER ROLE BADGE
+========================= */
+
+
+.badge.admin {
+  background: #8b5cf6;
+}
+.badge.staff {
+  background: #22c55e;
+}

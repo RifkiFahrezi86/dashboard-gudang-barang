@@ -13,3 +13,10 @@ export type Transaksi = {
   jumlah: number;
   tanggal: string;
 };
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: "admin" | "staff";
+};

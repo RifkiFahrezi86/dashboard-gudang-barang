@@ -65,3 +65,23 @@ export async function deleteBarang(id: string) {
   revalidatePath("/dashboard/barang");
   redirect("/dashboard/barang");
 }
+
+/* USER MANAGEMENT */
+
+export async function createUser(formData: FormData) {
+  const name = formData.get("name") as string;
+  const email = formData.get("email") as string;
+  const role = formData.get("role") as string;
+
+  if (!name || !email || !role) {
+    throw new Error("Data tidak lengkap");
+  }
+
+  await sql`
+    INSERT INTO users (name, email, role)
+    VALUES (${name}, ${email}, ${role})
+  `;
+
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
+}
