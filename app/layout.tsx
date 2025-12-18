@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import "@/styles/login.css";
 
 export const metadata = {
   title: "Dashboard Gudang",

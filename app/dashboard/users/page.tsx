@@ -1,6 +1,7 @@
-import UsersTable from "@/app/ui/UsersTable";
 import { sql } from "@vercel/postgres";
+import UsersTable from "@/app/ui/UsersTable";
 import { User } from "@/app/lib/types";
+import { createUser } from "@/app/lib/actions";
 
 export default async function UsersPage() {
   const { rows } = await sql<User>`

@@ -1,0 +1,94 @@
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(
+    circle at top,
+    #3b1a7a,
+    #0b0f1a 60%
+  );
+}
+
+.login-card {
+  width: 360px;
+  background: linear-gradient(
+    180deg,
+    #1a1f36,
+    #0f1224
+  );
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.login-header h1 {
+  color: #c084fc;
+  margin-bottom: 4px;
+}
+
+.login-header p {
+  color: #9ca3af;
+  margin-bottom: 24px;
+}
+
+.login-form label {
+  display: block;
+  color: #e5e7eb;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.login-form input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  background: #0b1020;
+  border: 1px solid #2a2f4a;
+  border-radius: 8px;
+  color: #fff;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: #a855f7;
+}
+
+.login-form button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  background: linear-gradient(90deg, #7c3aed, #9333ea);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  opacity: 0.9;
+}
+
+
+
+/* Logout Button Styles */
+.logout-form {
+  margin-top: auto;
+  padding: 16px;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}

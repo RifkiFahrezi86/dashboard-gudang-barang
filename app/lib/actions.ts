@@ -1,8 +1,13 @@
 "use server";
-
 import { sql } from "@vercel/postgres";
-import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+
+
+
+
 /* CREATE */
 export async function createBarang(formData: FormData) {
   const id = formData.get("id") as string;
@@ -66,22 +71,65 @@ export async function deleteBarang(id: string) {
   redirect("/dashboard/barang");
 }
 
-/* USER MANAGEMENT */
+
+/* USER MANAGEMENT WITH PASSWORD */
+
+export async function loginUser(formData: FormData) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!email || !password) {
+    throw new Error("Email dan password wajib diisi");
+  }
+
+  const { rows } = await sql`
+    SELECT id, name, role, password
+    FROM users
+    WHERE email = ${email}
+  `;
+
+  const user = rows[0];
+  if (!user) throw new Error("User tidak ditemukan");
+
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) throw new Error("Password salah");
+
+const cookieStore = await cookies();
+
+cookieStore.set("role", user.role, {
+  httpOnly: true,
+  path: "/",
+});
+
+  redirect("/dashboard");
+}
+
 
 export async function createUser(formData: FormData) {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
-  const role = formData.get("role") as string;
+  const role = formData.get("role") as "admin" | "staff";
+  const password = formData.get("password") as string; 
 
-  if (!name || !email || !role) {
+  if (!name || !email || !role || !password) {
     throw new Error("Data tidak lengkap");
   }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   await sql`
-    INSERT INTO users (name, email, role)
-    VALUES (${name}, ${email}, ${role})
+    INSERT INTO users (name, email, role, password)
+    VALUES (${name}, ${email}, ${role}, ${hashedPassword})
   `;
 
   revalidatePath("/dashboard/users");
   redirect("/dashboard/users");
+}
+
+export async function logoutUser() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("role");
+
+  redirect("/login");
 }

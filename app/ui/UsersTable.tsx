@@ -4,7 +4,16 @@ export default function UsersTable({ data }: { data: User[] }) {
   return (
     <section className="card">
       <h3>Manajemen User</h3>
+
       <table>
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+
         <tbody>
           {data.map(user => (
             <tr key={user.id}>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-
+import { logoutUser } from "@/app/lib/actions";
 const menu = [
   {
     section: "MAIN",
@@ -66,34 +66,41 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="sidebar">
-      <h2 className="brand">Gudang Barang</h2>
+  <aside className="sidebar">
+    <h2 className="brand">Gudang Barang</h2>
 
-      {menu.map((group) => (
-        <div key={group.section}>
-          <span className="section">{group.section}</span>
+    {menu.map((group) => (
+      <div key={group.section}>
+        <span className="section">{group.section}</span>
 
-          {group.items.map((item) => {
-            const active = pathname === item.href;
+        {group.items.map((item) => {
+          const active = pathname === item.href;
 
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`nav-link ${active ? "active" : ""}`}
-              >
-                <Image
-                  src={item.icon}
-                  alt={item.label}
-                  width={18}
-                  height={18}
-                />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      ))}
-    </aside>
-  );
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`nav-link ${active ? "active" : ""}`}
+            >
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={18}
+                height={18}
+              />
+              <span>{item.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    ))}
+
+
+       <form action={logoutUser} className="logout-form">
+    <button type="submit" className="logout-btn">
+      Logout
+    </button>
+  </form>
+</aside>
+);
 }

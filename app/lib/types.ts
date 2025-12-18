@@ -15,8 +15,9 @@ export type Transaksi = {
 };
 
 export type User = {
-  id: string;
+  id: string;        // UUID
   name: string;
   email: string;
   role: "admin" | "staff";
+  created_at: string;
 };
