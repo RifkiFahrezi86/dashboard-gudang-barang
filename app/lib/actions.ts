@@ -4,7 +4,8 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { requireAdmin } from "@/app/lib/auth";
+
+
 
 
 
@@ -29,11 +30,8 @@ export async function createBarang(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
-  redirect("/dashboard/barang");
-
-
+  redirect("/dashboard/barang")
 }
-
 
 /* UPDATE */
 export async function updateBarang(formData: FormData) {
@@ -61,10 +59,9 @@ export async function updateBarang(formData: FormData) {
 
 /* DELETE */
 export async function deleteBarang(id: string) {
-  requireAdmin();
-
   await sql`
-    DELETE FROM barang WHERE id = ${id}
+    DELETE FROM barang
+    WHERE id = ${id}
   `;
 
   revalidatePath("/dashboard");
@@ -103,7 +100,6 @@ cookieStore.set("role", user.role, {
   sameSite: "lax",
   path: "/",
 });
-
 
   redirect("/dashboard");
 }

@@ -4,49 +4,44 @@ import Pagination from "@/app/ui/Pagination";
 import Search from "@/app/ui/Search";
 import { getBarang } from "@/app/lib/db";
 import { redirect } from "next/navigation";
-import { getRole } from "@/app/lib/auth";
 
-type PageProps = {
-  searchParams?: {
+export default async function BarangPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
     page?: string;
     search?: string;
-  };
-};
+  }>;
+}) {
+  const resolvedSearchParams = await searchParams;
 
-export default async function BarangPage({ searchParams }: PageProps) {
-  const role = await getRole(); // ✅ FIX
-
-  const page = Number(searchParams?.page ?? 1);
-  const search = searchParams?.search ?? "";
+  const page = Number(resolvedSearchParams.page ?? 1);
+  const search = resolvedSearchParams.search ?? "";
 
   const { barang, total, pageSize } = await getBarang({
     page,
     search,
   });
-
   const totalPages = Math.ceil(total / pageSize);
   if (page > totalPages && totalPages > 0) {
     redirect(`/dashboard/barang?page=${totalPages}`);
   }
-
   return (
     <>
-      <Header />
+      <Header/>
 
-      <div className="page-actions">
-        <div className="search-group">
-          <Search defaultValue={search} />
-        </div>
+          <div className="page-actions">
+            <div className="search-group">
+              <Search defaultValue={search} />
+            </div>
 
-        {/* ADMIN ONLY */}
-        {role === "admin" && (
-          <a href="/dashboard/barang/create" className="btn-primary">
-            + Tambah Barang
-          </a>
-        )}
-      </div>
+            <a href="/dashboard/barang/create" className="btn-primary">
+              + Tambah Barang
+            </a>
+            </div>
 
-      <BarangTable data={barang} role={role} />
+
+      <BarangTable data={barang} />
 
       <Pagination
         page={page}
@@ -54,7 +49,7 @@ export default async function BarangPage({ searchParams }: PageProps) {
         pageSize={pageSize}
         search={search}
         basePath="/dashboard/barang"
-      />
-    </>
+      />            
+          </> 
   );
 }
