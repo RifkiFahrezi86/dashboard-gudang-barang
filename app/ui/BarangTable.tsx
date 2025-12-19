@@ -1,13 +1,12 @@
-type Barang = {
-  id: string;
-  nama: string;
-  jenis: string;
-  stok: number;
-  satuan: string;
-};
+import { Barang } from "@/app/lib/types";
 
-
-export default function BarangTable({ data }: { data: Barang[] }) {
+export default function BarangTable({
+  data,
+  role,
+}: {
+  data: Barang[];
+  role: "admin" | "staff";
+}) {
   return (
     <div className="table-box">
       <table>
@@ -21,6 +20,7 @@ export default function BarangTable({ data }: { data: Barang[] }) {
             <th>Aksi</th>
           </tr>
         </thead>
+
         <tbody>
           {data.map((item) => (
             <tr key={item.id}>
@@ -28,22 +28,34 @@ export default function BarangTable({ data }: { data: Barang[] }) {
               <td>{item.nama}</td>
               <td>{item.jenis}</td>
               <td>
-                <span className={`badge ${item.stok <= 5 ? "danger" : "warning"}`}>
+                <span
+                  className={`badge ${
+                    item.stok <= 5 ? "danger" : "warning"
+                  }`}
+                >
                   {item.stok}
                 </span>
               </td>
               <td>{item.satuan}</td>
+
               <td className="actions">
-              <a href={`/dashboard/barang/${item.id}/edit`} title="Edit">
-                ✏️
-              </a>
-              <a
-                href={`/dashboard/barang/${item.id}/delete`}
-                title="Hapus"
-              >
-                🗑️
-              </a>
-            </td>
+                {role === "admin" && (
+                  <>
+                    <a
+                      href={`/dashboard/barang/${item.id}`}
+                      title="Edit"
+                    >
+                      ✏️
+                    </a>
+                    <a
+                      href={`/dashboard/barang/${item.id}/delete`}
+                      title="Hapus"
+                    >
+                      🗑️
+                    </a>
+                  </>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

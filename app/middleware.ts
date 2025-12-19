@@ -1,27 +1,26 @@
+// app/middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const role = request.cookies.get("role")?.value;
+  const pathname = request.nextUrl.pathname;
 
-  const adminOnlyPaths = [
+  // belum login
+  if (!role && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  const adminOnly = [
     "/dashboard/users",
-    "/dashboard/barang/",
+    "/dashboard/barang/create",
   ];
 
-  // proteksi halaman admin (edit/delete)
   if (
-    adminOnlyPaths.some(path =>
-      request.nextUrl.pathname.startsWith(path)
-    )
+    adminOnly.some((p) => pathname.startsWith(p)) &&
+    role !== "admin"
   ) {
-    if (!role) {
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    if (role !== "admin") {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-    }
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
