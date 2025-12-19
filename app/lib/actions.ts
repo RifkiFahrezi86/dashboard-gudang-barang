@@ -98,8 +98,11 @@ const cookieStore = await cookies();
 
 cookieStore.set("role", user.role, {
   httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
   path: "/",
 });
+
 
   redirect("/dashboard");
 }

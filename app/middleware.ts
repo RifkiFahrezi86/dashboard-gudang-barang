@@ -7,6 +7,11 @@ export function middleware(request: NextRequest) {
   const adminOnlyPaths = ["/dashboard/users"];
 
   if (adminOnlyPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
+    if (!role) {
+      // belum login / cookie hilang
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
     if (role !== "admin") {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
@@ -14,6 +19,7 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
+
 
 export const config = {
   matcher: ["/dashboard/:path*"],
