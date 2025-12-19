@@ -4,11 +4,18 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const role = request.cookies.get("role")?.value;
 
-  const adminOnlyPaths = ["/dashboard/users"];
+  const adminOnlyPaths = [
+    "/dashboard/users",
+    "/dashboard/barang/",
+  ];
 
-  if (adminOnlyPaths.some(path => request.nextUrl.pathname.startsWith(path))) {
+  // proteksi halaman admin (edit/delete)
+  if (
+    adminOnlyPaths.some(path =>
+      request.nextUrl.pathname.startsWith(path)
+    )
+  ) {
     if (!role) {
-      // belum login / cookie hilang
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
@@ -19,7 +26,6 @@ export function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-
 
 export const config = {
   matcher: ["/dashboard/:path*"],
