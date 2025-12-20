@@ -50,14 +50,15 @@ export async function getBarangById(id: string) {
   return rows[0] ?? null;
 }
 
-export async function getAllBarang() {
-  const { rows } = await sql`
-    SELECT *
+export async function getAllBarang(): Promise<Barang[]> {
+  const { rows } = await sql<Barang>`
+    SELECT id, nama, jenis, stok, satuan
     FROM barang
     ORDER BY nama ASC
   `;
   return rows;
 }
+
 type GetBarangParams = {
   page: number;
   search: string;
