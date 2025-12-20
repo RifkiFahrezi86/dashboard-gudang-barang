@@ -30,6 +30,7 @@ export async function createBarang(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
+  revalidatePath("/dashboard/laporan"); 
   redirect("/dashboard/barang")
 }
 
@@ -53,6 +54,7 @@ export async function updateBarang(formData: FormData) {
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
+  revalidatePath("/dashboard/laporan"); 
   redirect("/dashboard/barang");
 }
 
@@ -67,6 +69,7 @@ export async function deleteBarang(id: string) {
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/barang");
   redirect("/dashboard/barang");
+  revalidatePath("/dashboard/laporan"); 
 }
 
 
