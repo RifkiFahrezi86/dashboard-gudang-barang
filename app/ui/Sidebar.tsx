@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { logoutUser } from "@/app/lib/actions";
+
 const menu = [
   {
     section: "MAIN",
@@ -50,7 +51,7 @@ const menu = [
       },
     ],
   },
-  { 
+  {
     section: "PENGATURAN",
     items: [
       {
@@ -66,41 +67,51 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-  <aside className="sidebar">
-    <h2 className="brand">Gudang Barang</h2>
+    <aside className="sidebar">
 
-    {menu.map((group) => (
-      <div key={group.section}>
-        <span className="section">{group.section}</span>
+      {/* 🔥 BRAND DENGAN LOGO */}
+      <div className="brand brand-vertical">
+        <Image
+          src="/logo/gudang-logo.svg"
+          alt="Gudang Barang"
+          width={44}
+          height={44}
+          priority
+  />
+  <span>Gudang Barang</span>
+</div>
 
-        {group.items.map((item) => {
-          const active = pathname === item.href;
+      {menu.map((group) => (
+        <div key={group.section}>
+          <span className="section">{group.section}</span>
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`nav-link ${active ? "active" : ""}`}
-            >
-              <Image
-                src={item.icon}
-                alt={item.label}
-                width={18}
-                height={18}
-              />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
-      </div>
-    ))}
+          {group.items.map((item) => {
+            const active = pathname === item.href;
 
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link ${active ? "active" : ""}`}
+              >
+                <Image
+                  src={item.icon}
+                  alt={item.label}
+                  width={18}
+                  height={18}
+                />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      ))}
 
-       <form action={logoutUser} className="logout-form">
-    <button type="submit" className="logout-btn">
-      Logout
-    </button>
-  </form>
-</aside>
-);
+      <form action={logoutUser} className="logout-form">
+        <button type="submit" className="logout-btn">
+          Logout
+        </button>
+      </form>
+    </aside>
+  );
 }
