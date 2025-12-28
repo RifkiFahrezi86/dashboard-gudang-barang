@@ -141,8 +141,12 @@ export async function getBarangMasuk({ page }: { page: number }) {
     SELECT
       bm.id,
       b.nama,
+      b.jenis,
       bm.jumlah,
-      bm.tanggal
+      bm.tanggal,
+      bm.sumber,
+      bm.catatan,
+      bm.status
     FROM barang_masuk bm
     JOIN barang b ON b.id = bm.barang_id
     ORDER BY bm.tanggal DESC
@@ -162,6 +166,8 @@ export async function getBarangMasuk({ page }: { page: number }) {
   };
 }
 
+
+
 export async function getBarangKeluar({ page }: { page: number }) {
   const pageSize = 7;
   const offset = (page - 1) * pageSize;
@@ -170,8 +176,12 @@ export async function getBarangKeluar({ page }: { page: number }) {
     SELECT
       bk.id,
       b.nama,
+      b.jenis,
       bk.jumlah,
-      bk.tanggal
+      bk.tanggal,
+      bk.tujuan,
+      bk.catatan,
+      bk.status
     FROM barang_keluar bk
     JOIN barang b ON b.id = bk.barang_id
     ORDER BY bk.tanggal DESC
@@ -190,3 +200,4 @@ export async function getBarangKeluar({ page }: { page: number }) {
     pageSize,
   };
 }
+
