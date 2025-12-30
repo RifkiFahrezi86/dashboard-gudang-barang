@@ -133,22 +133,26 @@ export async function getLaporanStok(): Promise<Barang[]> {
   return rows as Barang[];
 }
 
+// ✅ DIPERBAIKI - Tambahkan barang_id di SELECT
 export async function getBarangMasuk({ page }: { page: number }) {
   const pageSize = 7;
   const offset = (page - 1) * pageSize;
 
   const { rows } = await sql<Transaksi>`
-    SELECT
-      bm.id,
-      b.nama,
-      b.jenis,
-      bm.jumlah,
-      bm.tanggal,
-      bm.sumber,
-      bm.catatan,
-      bm.status
-    FROM barang_masuk bm
-    JOIN barang b ON b.id = bm.barang_id
+      SELECT
+        bm.id,
+        bm.barang_id,
+        b.nama,
+        b.jenis,
+        bm.jumlah,
+        bm.tanggal,
+        bm.sumber AS sumber,
+        NULL AS tujuan,
+        bm.catatan,
+        bm.status
+      FROM barang_masuk bm
+      JOIN barang b ON b.id = bm.barang_id
+
     ORDER BY bm.tanggal DESC
     LIMIT ${pageSize}
     OFFSET ${offset}
@@ -166,8 +170,7 @@ export async function getBarangMasuk({ page }: { page: number }) {
   };
 }
 
-
-
+// ✅ DIPERBAIKI - Tambahkan barang_id di SELECT
 export async function getBarangKeluar({ page }: { page: number }) {
   const pageSize = 7;
   const offset = (page - 1) * pageSize;
@@ -175,15 +178,18 @@ export async function getBarangKeluar({ page }: { page: number }) {
   const { rows } = await sql<Transaksi>`
     SELECT
       bk.id,
+      bk.barang_id,
       b.nama,
       b.jenis,
       bk.jumlah,
       bk.tanggal,
-      bk.tujuan,
+      NULL AS sumber,
+      bk.tujuan AS tujuan,
       bk.catatan,
       bk.status
     FROM barang_keluar bk
     JOIN barang b ON b.id = bk.barang_id
+
     ORDER BY bk.tanggal DESC
     LIMIT ${pageSize}
     OFFSET ${offset}
@@ -201,3 +207,43 @@ export async function getBarangKeluar({ page }: { page: number }) {
   };
 }
 
+// ✅ TAMBAHAN - Fungsi untuk get pending transactions (untuk approval)
+export async function getPendingTransactions() {
+  // Ambil pending barang masuk
+  const masuk = await sql`
+    SELECT
+      bm.id,
+      bm.barang_id,
+      b.nama,
+      b.jenis,
+      bm.jumlah,
+      bm.tanggal,
+      bm.sumber as sumber_atau_tujuan,
+      bm.catatan,
+      'masuk' as type
+    FROM barang_masuk bm
+    JOIN barang b ON b.id = bm.barang_id
+    WHERE bm.status = 'pending'
+    ORDER BY bm.tanggal DESC
+  `;
+
+  // Ambil pending barang keluar
+  const keluar = await sql`
+    SELECT
+      bk.id,
+      bk.barang_id,
+      b.nama,
+      b.jenis,
+      bk.jumlah,
+      bk.tanggal,
+      bk.tujuan as sumber_atau_tujuan,
+      bk.catatan,
+      'keluar' as type
+    FROM barang_keluar bk
+    JOIN barang b ON b.id = bk.barang_id
+    WHERE bk.status = 'pending'
+    ORDER BY bk.tanggal DESC
+  `;
+
+  return [...masuk.rows, ...keluar.rows];
+}

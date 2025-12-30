@@ -1,4 +1,7 @@
 import { Barang } from "@/app/lib/types";
+import {
+  DEFAULT_STOCK_LIMIT,
+} from "@/app/lib/stock";
 
 
 export default function BarangTable({ data }: { data: Barang[] }) {
@@ -30,13 +33,19 @@ export default function BarangTable({ data }: { data: Barang[] }) {
                 <td>{item.nama}</td>
                 <td>{item.jenis}</td>
                 <td>
-                  <span
-                    className={`badge ${
-                      item.stok <= 5 ? "danger" : "warning"
-                    }`}
-                  >
-                    {item.stok}
-                  </span>
+                    <span
+                      className={`badge ${
+                        item.stok <= 3
+                          ? "critical"
+                          : item.stok <= 5
+                          ? "danger"
+                          : item.stok <= 10
+                          ? "warning"
+                          : "safe"
+                      }`}
+                    >
+                      {item.stok}
+                    </span>
                 </td>
                 <td>{item.satuan}</td>
                 <td className="actions">
