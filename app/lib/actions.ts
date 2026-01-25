@@ -18,7 +18,7 @@ export async function createBarang(formData: FormData) {
   const stok = Number(stokRaw);
 
   if (!id || !nama || !jenis || !satuan || isNaN(stok)) {
-    throw new Error("Data tidak valid");
+    throw new Error("Data tidak valid atau lengkap");
   }
 
   await sql`
